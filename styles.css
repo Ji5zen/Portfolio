@@ -1,0 +1,679 @@
+/* リセットとベーススタイル */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --accent-color: #1a1a1a;
+    --overlay-bg: rgba(0, 0, 0, 0.75);
+    --border-color: rgba(0, 0, 0, 0.08);
+    --hover-color: #000;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', 'MS PGothic', sans-serif;
+    background: linear-gradient(180deg, #d8d8d8 0%, #e0e0e0 50%, #d5d5d5 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: var(--text-color);
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+}
+
+/* ギリシャ文字（δなど）を正しく表示するためのフォント指定 */
+/* システムフォントを優先し、日本語フォントを後回しにしてギリシャ文字を正しく表示 */
+h1, h2, h3, h4, h5, h6,
+.masonly-overlay h3,
+.detail-info h1 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: "kern" 1;
+    font-kerning: normal;
+}
+
+/* ヘッダー */
+header {
+    background: linear-gradient(180deg, #d8d8d8 0%, #e0e0e0 50%, #d5d5d5 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 2rem 4rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.2s ease;
+    text-transform: none;
+}
+
+.logo:hover {
+    color: var(--hover-color);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 3rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 400;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s ease;
+    text-transform: uppercase;
+}
+
+.nav-links a:hover {
+    color: var(--hover-color);
+}
+
+/* Masonly Grid - マソンリーレイアウト */
+.masonly-grid {
+    column-count: 4;
+    column-gap: 1rem;
+    padding: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    /* リサイズ時のスムーズな再計算を有効化 */
+    transition: column-count 0.3s ease, column-gap 0.3s ease, padding 0.3s ease;
+    will-change: column-count;
+}
+
+.masonly-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    page-break-inside: avoid;
+    /* リサイズ時の再描画を最適化 */
+    contain: layout style paint;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.masonly-item:hover {
+    opacity: 0.85;
+}
+
+/* ホバー時のみGPUアクセラレーションを有効化 */
+.masonly-item:hover,
+.masonly-item:hover .masonly-image img {
+    will-change: transform;
+}
+
+
+.masonly-image {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.masonly-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease-out;
+}
+
+
+.masonly-item:hover .masonly-image img {
+    transform: scale(1.02);
+}
+
+.masonly-overlay {
+    position: static;
+    background: transparent;
+    color: var(--text-color);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    overflow: visible;
+}
+
+.masonly-overlay h3 {
+    display: none;
+}
+
+.masonly-description {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+    opacity: 0.6;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    display: none;
+}
+
+.masonly-software {
+    display: none;
+}
+
+/* Aboutリンク */
+.masonly-item.about-link {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, opacity 0.3s ease;
+    min-height: 200px;
+}
+
+.masonly-item.about-link:hover {
+    border-color: var(--text-color);
+    opacity: 1;
+}
+
+.masonly-item.about-link a {
+    text-decoration: none;
+    color: var(--text-color);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.masonly-content {
+    text-align: center;
+}
+
+.masonly-content h2 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.masonly-content p {
+    display: none;
+}
+
+/* Aboutページ */
+.about-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+}
+
+.about-content h1 {
+    font-size: 2.25rem;
+    margin-bottom: 3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.about-section {
+    margin-bottom: 4rem;
+}
+
+.about-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.about-section p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+    font-weight: 300;
+}
+
+.skills-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.skills-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+    color: #4a4a4a;
+    font-weight: 300;
+}
+
+.skills-list li:last-child {
+    border-bottom: none;
+}
+
+/* 詳細ページ */
+.detail-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.detail-container {
+    position: relative;
+    margin-bottom: 3rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.detail-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    opacity: 0.3;
+}
+
+.detail-nav:hover {
+    background: #fff;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-50%) scale(1.05);
+    opacity: 1;
+}
+
+.detail-nav.prev {
+    left: 1rem;
+}
+
+.detail-nav.next {
+    right: 1rem;
+}
+
+.detail-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.detail-image {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.detail-image.portrait {
+    aspect-ratio: 3 / 4;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.detail-image img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.detail-video {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.detail-video iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.detail-info h1 {
+    font-size: 1.875rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+}
+
+.detail-type {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.detail-description {
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+    font-weight: 300;
+}
+
+.detail-software {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(180deg, #d8d8d8 0%, #e0e0e0 50%, #d5d5d5 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.detail-software h3 {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.detail-software p {
+    font-weight: 300;
+    color: #4a4a4a;
+}
+
+.software-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.software-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.software-item:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.software-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    display: block;
+}
+
+.software-item svg.software-logo {
+    width: 32px;
+    height: 32px;
+    display: block;
+}
+
+.detail-link {
+    margin-top: 2.5rem;
+}
+
+.detail-link a {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: var(--accent-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-size: 0.95rem;
+}
+
+.detail-link a:hover {
+    background: var(--hover-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.detail-list {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.detail-list h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.detail-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.detail-thumbnail {
+    position: relative;
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+.detail-thumbnail:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.detail-thumbnail.active {
+    border-color: var(--hover-color);
+    box-shadow: var(--shadow-md);
+}
+
+.detail-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+    header {
+        padding: 1.5rem 2rem;
+    }
+
+    .masonly-grid {
+        column-count: 3;
+        column-gap: 0.75rem;
+        padding: 1.5rem;
+    }
+
+    .masonly-item {
+        margin-bottom: 0.75rem;
+    }
+
+
+    .detail-content {
+        grid-template-columns: 1fr;
+        min-width: 0;
+    }
+
+    .detail-image {
+        justify-self: center;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .detail-nav.prev {
+        left: 0.5rem;
+    }
+
+    .detail-nav.next {
+        right: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 1.25rem 1.5rem;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-links {
+        gap: 1.5rem;
+    }
+
+    .masonly-grid {
+        column-count: 2;
+        column-gap: 0.75rem;
+        padding: 1.5rem;
+    }
+
+    .masonly-item {
+        margin-bottom: 0.75rem;
+    }
+
+    .masonly-overlay h3 {
+        font-size: 0.8125rem;
+    }
+
+    .detail-page {
+        padding: 1rem;
+    }
+
+    .detail-content {
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        min-width: 0;
+    }
+
+    .detail-image {
+        justify-self: center;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .detail-nav {
+        padding: 0.625rem 1rem;
+        font-size: 0.8125rem;
+    }
+
+    .detail-nav.prev {
+        left: 0.5rem;
+    }
+
+    .detail-nav.next {
+        right: 0.5rem;
+    }
+
+    .detail-thumbnails {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1.5rem 1.5rem;
+    }
+
+    .masonly-grid {
+        column-count: 1;
+        column-gap: 0;
+        padding: 1rem;
+    }
+
+    .masonly-item {
+        margin-bottom: 1rem;
+    }
+
+    .about-page {
+        padding: 2rem 1rem;
+    }
+
+    .about-content h1 {
+        font-size: 2rem;
+    }
+
+    .detail-page {
+        padding: 0.75rem;
+    }
+
+    .detail-content {
+        gap: 1rem;
+        margin: 1rem 0;
+        min-width: 0;
+    }
+
+    .detail-image {
+        justify-self: center;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+}
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品詳細</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">RAIKI FURUYA/δ- PORTFOLIO</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Works</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="detail-page">
+        <div class="detail-container">
+            <div class="detail-content">
+                <div class="detail-image" id="detailImageContainer">
+                    <button class="detail-nav prev" id="prevBtn">&lt;</button>
+                    <img id="detailImage" src="https://via.placeholder.com/1200x800" alt="作品画像">
+                    <div id="detailVideo" class="detail-video" style="display: none;">
+                        <iframe id="videoIframe" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <button class="detail-nav next" id="nextBtn">&gt;</button>
+                </div>
+                
+                <div class="detail-info">
+                    <h1 id="detailTitle">作品タイトル</h1>
+                    <p class="detail-type" id="detailType">作品タイプ</p>
+                    <div class="detail-description" id="detailDescription">
+                        <p>作品の詳細な説明がここに表示されます。制作意図、コンセプト、制作過程などを詳しく記述してください。</p>
+                    </div>
+                    <div class="detail-software" id="detailSoftware">
+                        <h3>使用ソフト・言語</h3>
+                        <div class="software-logos" id="softwareLogos"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-list">
+            <h2>すべての作品</h2>
+            <div class="detail-thumbnails" id="detailThumbnails">
+                <!-- JavaScriptで動的に生成 -->
+            </div>
+        </div>
+    </main>
+
+    <script src="detail.js"></script>
+</body>
+</html>
+
