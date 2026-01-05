@@ -349,8 +349,11 @@ async function displayWork(index) {
         softwareName && softwareName !== '（後で記入）'
     );
     
+    // 重複を除去（Setを使用）
+    const uniqueSoftwareList = [...new Set(validSoftwareList)];
+    
     // ロゴを非同期で読み込む（Promiseの配列を作成）
-    const logoPromises = validSoftwareList.map(async (softwareName) => {
+    const logoPromises = uniqueSoftwareList.map(async (softwareName) => {
         const iconName = softwareIconNames[softwareName] || 
             Object.entries(softwareIconNames).find(([key]) => 
                 softwareName.includes(key) || key.includes(softwareName)
